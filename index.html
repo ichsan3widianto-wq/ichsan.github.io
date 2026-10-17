@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Portofolio | Profil Mahasiswa</title>
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <nav>
+        <div class="logo">MyPortofolio</div>
+        <ul>
+            <li><a href="index.html" class="active">Profil</a></li>
+            <li><a href="sertifikat.html">Sertifikat</a></li>
+        </ul>
+    </nav>
+
+    <div class="container">
+
+        <div class="profil-card">
+            <div class="profil-foto-wrapper">
+                <img id="fotoProfil" src="img/profil.jpg" alt="Foto Profil">
+                <label for="inputFoto" class="btn-upload">📷 Pilih Foto</label>
+                <input type="file" id="inputFoto" accept="image/*">
+                <button type="button" id="resetFoto" class="btn-upload" style="margin-top:6px;">🗑️ Hapus Foto</button>
+            </div>
+            <div class="profil-info">
+                <h1>MUHAMAD ICHSAN WIDIANTO</h1>
+                <p class="role">Web Developer | Mahasiswa Universitas Pamulang</p>
+                <table>
+                    <tr><td>Nama</td><td>: Muhamad Ichsan Widianto</td></tr>
+                    <tr><td>NIM</td><td>: 2210114XXXX</td></tr>
+                    <tr><td>Program Studi</td><td>: Teknik Informatika</td></tr>
+                    <tr><td>Semester</td><td>: 5 (Lima)</td></tr>
+                    <tr><td>Kampus</td><td>: Universitas Pamulang</td></tr>
+                    <tr><td>Email</td><td>: nama@email.com</td></tr>
+                </table>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>Tentang Saya</h2>
+            <p>
+                Saya adalah mahasiswa Universitas Pamulang semester 5 yang memiliki
+                ketertarikan besar di bidang pengembangan web (Web Development).
+                Saya aktif mempelajari HTML, CSS, JavaScript, dan terus mengasah
+                kemampuan melalui proyek-proyek pribadi maupun perkuliahan.
+            </p>
+        </div>
+
+        <div class="section">
+            <h2>Keahlian</h2>
+            <ul class="skill-list">
+                <li>HTML</li>
+                <li>CSS</li>
+                <li>JavaScript</li>
+                <li>PHP</li>
+                <li>MySQL</li>
+                <li>Bootstrap</li>
+                <li>Git & GitHub</li>
+            </ul>
+        </div>
+
+    </div>
+
+    <footer>
+        &copy; 2025 Nama Lengkap Anda — Mahasiswa UNPAM Semester 5
+    </footer>
+
+    <script>
+        const inputFoto = document.getElementById('inputFoto');
+        const fotoProfil = document.getElementById('fotoProfil');
+        const resetFoto = document.getElementById('resetFoto');
+
+        const STORAGE_KEY = 'fotoProfilData';
+        const DEFAULT_SRC = 'img/profil.jpg';
+
+        const savedFoto = localStorage.getItem(STORAGE_KEY);
+        if (savedFoto) {
+            fotoProfil.src = savedFoto;
+        }
+
+        inputFoto.addEventListener('change', function (event) {
+            const file = event.target.files[0];
+            if (!file) return;
+
+            if (!file.type.startsWith('image/')) {
+                alert('File harus berupa gambar!');
+                return;
+            }
+
+            if (file.size > 2 * 1024 * 1024) {
+                alert('Ukuran gambar terlalu besar. Maksimal 2 MB.');
+                return;
+            }
+
+            const reader = new FileReader();
+            reader.onload = function (e) {
+                const dataUrl = e.target.result;
+                fotoProfil.src = dataUrl;
+                try {
+                    localStorage.setItem(STORAGE_KEY, dataUrl);
+                } catch (err) {
+                    alert('Gagal menyimpan foto (penyimpanan browser penuh).');
+                    console.error(err);
+                }
+            };
+            reader.readAsDataURL(file);
+        });
+
+        resetFoto.addEventListener('click', function () {
+            localStorage.removeItem(STORAGE_KEY);
+            fotoProfil.src = DEFAULT_SRC;
+            inputFoto.value = '';
+        });
+    </script>
+
+</body>
+</html>
